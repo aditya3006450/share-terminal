@@ -48,6 +48,7 @@ pub fn viewers() -> Html {
         <AccessLayout>
             <section>
                 <h2>{"Current Viewers"}</h2>
+                {"Users who can use your device"}
                 {if *loading {
                     html! { <p>{"Loading viewers..."}</p> }
                 } else if let Some(err) = &*error {
@@ -77,3 +78,4 @@ pub fn viewers() -> Html {
         </AccessLayout>
     }
 }
+

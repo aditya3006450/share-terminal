@@ -59,6 +59,11 @@ async fn reject_request(token: String, access_id: String) -> Result<(), String> 
     api::access::reject_request(token, access_id).await
 }
 
+#[tauri::command]
+async fn cancel_request(token: String, access_id: String) -> Result<(), String> {
+    api::access::cancel_request(token, access_id).await
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -74,7 +79,8 @@ pub fn run() {
             get_incoming_requests,
             get_outgoing_requests,
             accept_request,
-            reject_request
+            reject_request,
+            cancel_request
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

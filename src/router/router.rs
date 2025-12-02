@@ -15,6 +15,4 @@ pub enum Route {
     IncomingRequests,
     #[at("/access/outgoing-requests")]
     OutgoingRequests,
-    #[at("/access/request-access")]
-    RequestAccess,
 }

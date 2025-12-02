@@ -180,3 +180,19 @@ pub async fn reject_request(token: String, access_id: String) -> Result<(), Stri
             .unwrap_or_else(|_| Err("Reject request failed with unknown error".to_string()))
     }
 }
+
+pub async fn cancel_request(token: String, request_id: String) -> Result<(), String> {
+    let args = serde_wasm_bindgen::to_value(&AcceptRejectRequestArgs { token, access_id: request_id })
+        .map_err(|e| format!("Failed to serialize cancel_request args: {}", e))?;
+
+    let result = invoke("cancel_request", args).await;
+
+    if result.is_undefined() || result.is_null() {
+        Ok(())
+    } else {
+        serde_wasm_bindgen::from_value(result)
+            .map(|s: String| Err(format!("Cancel request failed: {}", s)))
+            .unwrap_or_else(|_| Err("Cancel request failed with unknown error".to_string()))
+    }
+}
+

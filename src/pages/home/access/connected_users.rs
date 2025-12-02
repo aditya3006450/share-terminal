@@ -48,6 +48,7 @@ pub fn connected_users() -> Html {
         <AccessLayout>
             <section>
                 <h2>{"Connected Users"}</h2>
+                {"Users whose device can be accessed by you"}
                 {if *loading {
                     html! { <p>{"Loading connected users..."}</p> }
                 } else if let Some(err) = &*error {
@@ -77,3 +78,4 @@ pub fn connected_users() -> Html {
         </AccessLayout>
     }
 }
+

@@ -11,9 +11,9 @@ pub mod endpoints {
     pub const ACCESS_REQUESTS_INCOMING: &str = "/access/requests/incoming";
     pub const ACCESS_REQUESTS_OUTGOING: &str = "/access/requests/outgoing";
     pub const ACCESS_REQUESTS_ACCEPT: &str = "/access/requests"; // accessId and /accept will be appended
-    pub const ACCESS_REQUESTS_REJECT: &str = "/access/requests"; // accessId and /reject will be appended
-
-}
+        pub const ACCESS_REQUESTS_REJECT: &str = "/access/requests"; // accessId and /reject will be appended
+        pub const ACCESS_CANCEL_REQUEST: &str = "/access/requests"; // accessId and /cancel will be appended
+    }
 
 pub fn build_url(endpoint: &str) -> String {
     format!("{}{}", API_BASE_URL, endpoint)

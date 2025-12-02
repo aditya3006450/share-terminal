@@ -465,3 +465,60 @@ section {
     background-color: #b71c1c;
     transform: translateY(0);
 }
+
+/* Cancel Button Specific Styles */
+.btn-cancel {
+    background-color: #757575; /* Grey for cancel */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: all 0.2s ease;
+    flex: 1; /* Allow buttons to grow and shrink */
+    max-width: 120px; /* Max width for consistency */
+}
+
+.btn-cancel:hover {
+    background-color: #616161; /* Darker grey on hover */
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.btn-cancel:active {
+    background-color: #424242;
+    transform: translateY(0);
+}
+
+/* Styling for the Request Access section on the Access page */
+.request-access-section {
+    background-color: #f8f8f8; /* Light background similar to user cards */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Spacing between input, button, and message */
+    max-width: 500px; /* Limit width for a cleaner look */
+    margin: 20px auto; /* Center the section */
+    border: 1px solid #e0e0e0;
+}
+
+.dark-theme .request-access-section {
+    background-color: #1a1a1a;
+    border-color: #2a2a2a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.request-access-section p {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.dark-theme .request-access-section p {
+    color: #ccc;
+}

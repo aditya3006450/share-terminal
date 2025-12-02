@@ -187,5 +187,26 @@ pub async fn reject_request(token: String, access_id: String) -> Result<(), Stri
     Ok(())
 }
 
+pub async fn cancel_request(token: String, access_id: String) -> Result<(), String> {
+    let client = reqwest::Client::new();
+    let url = format!(
+        "{}/{}/cancel",
+        build_url(endpoints::ACCESS_CANCEL_REQUEST),
+        access_id
+    );
+    let response = client
+        .post(&url)
+        .header(AUTHORIZATION, format!("Bearer {}", token))
+        .header(CONTENT_TYPE, "application/json")
+        .send()
+        .await
+        .map_err(|e| format!("Request failed: {}", e))?;
+
+    if !response.status().is_success() {
+        return Err(format!("Failed to cancel request: {}", response.status()));
+    }
+    Ok(())
+}
+
 
 

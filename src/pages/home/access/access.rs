@@ -47,7 +47,6 @@ pub fn access() -> Html {
     };
     html! {
         <AccessLayout>
-            <h1>{"Access Page"}</h1>
             <section>
                 <h2>{"Request Access"}</h2>
                 <div class="request-access-section">

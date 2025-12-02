@@ -1,17 +1,16 @@
+use crate::utils::auth::get_auth_token;
 use wasm_bindgen::prelude::*;
 use yew::prelude::*;
 use yew_router::prelude::*;
-use crate::utils::auth::get_auth_token;
 
 use crate::pages::home::access::access::Access;
+use crate::pages::home::access::connected_users::ConnectedUsers;
+use crate::pages::home::access::incoming_requests::IncomingRequests;
+use crate::pages::home::access::outgoing_requests::OutgoingRequests;
+use crate::pages::home::access::viewers::Viewers;
 use crate::pages::home::login::login::Login;
 use crate::pages::home::signup::signup::SignUp;
 use crate::router::router::Route;
-use crate::pages::home::access::connected_users::ConnectedUsers;
-use crate::pages::home::access::viewers::Viewers;
-use crate::pages::home::access::incoming_requests::IncomingRequests;
-use crate::pages::home::access::outgoing_requests::OutgoingRequests;
-use crate::pages::home::access::request_access::RequestAccess;
 
 #[wasm_bindgen]
 extern "C" {
@@ -28,7 +27,6 @@ fn switch(routes: Route) -> Html {
         Route::Viewers => html! { <Viewers/> },
         Route::IncomingRequests => html! { <IncomingRequests/> },
         Route::OutgoingRequests => html! { <OutgoingRequests/> },
-        Route::RequestAccess => html! { <RequestAccess/> },
     }
 }
 
