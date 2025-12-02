@@ -1,0 +1,21 @@
+.error-message {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+    padding: 0.75rem;
+    border-radius: var(--input-radius);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-left: 3px solid var(--error);
+}
+
+.success-message {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    padding: 0.75rem;
+    border-radius: var(--input-radius);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-left: 3px solid var(--success);
+}

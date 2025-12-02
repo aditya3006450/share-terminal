@@ -1,0 +1,20 @@
+// API Configuration
+pub const API_BASE_URL: &str = "http://localhost:8080";
+
+// API Endpoints
+pub mod endpoints {
+    pub const AUTH_LOGIN: &str = "/auth/login";
+    pub const AUTH_SIGNUP: &str = "/auth/sign-up";
+    pub const ACCESS_CONNECTIONS: &str = "/access/connections";
+    pub const ACCESS_VIEWERS: &str = "/access/viewers";
+    pub const ACCESS_REQUEST: &str = "/access/request";
+    pub const ACCESS_REQUESTS_INCOMING: &str = "/access/requests/incoming";
+    pub const ACCESS_REQUESTS_OUTGOING: &str = "/access/requests/outgoing";
+    pub const ACCESS_REQUESTS_ACCEPT: &str = "/access/requests"; // accessId and /accept will be appended
+    pub const ACCESS_REQUESTS_REJECT: &str = "/access/requests"; // accessId and /reject will be appended
+
+}
+
+pub fn build_url(endpoint: &str) -> String {
+    format!("{}{}", API_BASE_URL, endpoint)
+}
