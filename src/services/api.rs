@@ -1,6 +1,6 @@
-
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
+use std::collections::HashMap;
 
 #[wasm_bindgen]
 extern "C" {
@@ -58,6 +58,23 @@ pub struct RequestAccessArgs {
     pub token: String,
     pub target_user_id: String,
 }
+
+// WebRTC Signaling structures
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct SignalMessage {
+    pub from_user_id: String,
+    pub to_user_id: String,
+    #[serde(rename = "type")] // Map "type" field from Java to "_type" in Rust
+    pub signal_type: String,
+    pub payload: HashMap<String, serde_json::Value>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct InboxResponse {
+    pub messages: Vec<SignalMessage>,
+}
+
 
 // API service functions
 pub async fn login(email: String, password: String) -> Result<LoginResponse, String> {
@@ -195,4 +212,51 @@ pub async fn cancel_request(token: String, request_id: String) -> Result<(), Str
             .unwrap_or_else(|_| Err("Cancel request failed with unknown error".to_string()))
     }
 }
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SendSignalArgs {
+    pub token: String,
+    pub to_user_id: String,
+    #[serde(rename = "type")]
+    pub signal_type: String,
+    pub payload: serde_json::Value,
+}
+
+pub async fn send_signal(
+    token: String,
+    to_user_id: String,
+    signal_type: String,
+    payload: serde_json::Value,
+) -> Result<(), String> {
+    let args = serde_wasm_bindgen::to_value(&SendSignalArgs {
+        token,
+        to_user_id,
+        signal_type,
+        payload,
+    })
+    .map_err(|e| format!("Failed to serialize send_signal args: {}", e))?;
+
+    let result = invoke("send_signal", args).await;
+
+    if result.is_undefined() || result.is_null() {
+        Ok(())
+    } else {
+        serde_wasm_bindgen::from_value(result)
+            .map(|s: String| Err(format!("Send signal failed: {}", s)))
+            .unwrap_or_else(|_| Err("Send signal failed with unknown error".to_string()))
+    }
+}
+
+pub async fn fetch_inbox(token: String) -> Result<Vec<SignalMessage>, String> {
+    let args = serde_wasm_bindgen::to_value(&TokenArg { token })
+        .map_err(|e| format!("Failed to serialize fetch_inbox args: {}", e))?;
+
+    let result = invoke("fetch_inbox", args).await;
+
+    serde_wasm_bindgen::from_value::<InboxResponse>(result)
+        .map(|res| res.messages)
+        .map_err(|e| format!("Failed to fetch inbox: {}", e))
+}
+
 

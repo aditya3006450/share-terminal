@@ -8,15 +8,51 @@ edition = "2021"
 yew = { version = "0.21", features = ["csr"] }
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
-web-sys = "0.3"
+web-sys = { version = "0.3.83", features = [
+    "console",
+    "Document",
+    "Element",
+    "HtmlElement",
+    "Node",
+    "Window",
+    "Navigator",
+    "MediaStreamConstraints",
+    "RtcPeerConnection",
+    "RtcSdpType",
+    "RtcIceCandidate",
+    "RtcIceCandidateInit",
+    "RtcSessionDescription",
+    "RtcSessionDescriptionInit",
+    "RtcPeerConnectionIceEvent",
+    "RtcTrackEvent",
+    "RtcRtpSender",
+    "RtcIceServer",
+    "RtcConfiguration",
+    "RtcPeerConnectionState",
+    "RtcIceGatheringState",
+    "MediaStream",
+    "MediaStreamTrack",
+    "MediaDevices",
+    "HtmlCanvasElement",
+    "HtmlVideoElement",
+    "DomError",
+    "Blob",
+    "Url",
+    "Performance"
+] }
 js-sys = "0.3"
 serde = { version = "1", features = ["derive"] }
 serde-wasm-bindgen = "0.6"
 console_error_panic_hook = "0.1.7"
 gloo = { version = "0.11.0", features = ["timers"] }
+gloo-timers = "0.2.6"
 yew-router = "0.18.0"
 yew_icons = {version = "0.8", features = ["BootstrapSunFill","BootstrapMoonFill"]}
 gloo-net = "0.6.0"
+serde_json = "1.0.145"
+uuid = { version = "1.8", features = ["serde", "v4", "js"] }
+log = "0.4"
+console_log = "1.0"
 
 
 [workspace]
