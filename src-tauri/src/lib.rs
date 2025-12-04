@@ -3,6 +3,7 @@ mod constants; // <-- Added this line
 
 use api::access::UserResponse;
 use api::auth::{LoginResponse, LogoutResponse, SignupResponse}; // Import UserResponse
+use api::signaling::SignalMessage;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -64,6 +65,21 @@ async fn cancel_request(token: String, access_id: String) -> Result<(), String> 
     api::access::cancel_request(token, access_id).await
 }
 
+#[tauri::command]
+async fn send_signal(
+    token: String,
+    to_user_id: String,
+    r#type: String,
+    payload: serde_json::Value,
+) -> Result<(), String> {
+    api::signaling::send_signal(token, to_user_id, r#type, payload).await
+}
+
+#[tauri::command]
+async fn fetch_inbox(token: String) -> Result<Vec<SignalMessage>, String> {
+    api::signaling::fetch_inbox(token).await
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -80,7 +96,9 @@ pub fn run() {
             get_outgoing_requests,
             accept_request,
             reject_request,
-            cancel_request
+            cancel_request,
+            send_signal,
+            fetch_inbox
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

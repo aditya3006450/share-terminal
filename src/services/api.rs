@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
-use wasm_bindgen::prelude::*;
 use std::collections::HashMap;
+use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 extern "C" {
@@ -61,20 +61,15 @@ pub struct RequestAccessArgs {
 
 // WebRTC Signaling structures
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
-#[serde(rename_all = "camelCase")]
 pub struct SignalMessage {
+    #[serde(rename = "fromUserId")]
     pub from_user_id: String,
+    #[serde(rename = "toUserId")]
     pub to_user_id: String,
-    #[serde(rename = "type")] // Map "type" field from Java to "_type" in Rust
+    #[serde(rename = "type")]
     pub signal_type: String,
     pub payload: HashMap<String, serde_json::Value>,
 }
-
-#[derive(Deserialize, Debug)]
-pub struct InboxResponse {
-    pub messages: Vec<SignalMessage>,
-}
-
 
 // API service functions
 pub async fn login(email: String, password: String) -> Result<LoginResponse, String> {
@@ -160,7 +155,6 @@ pub async fn get_outgoing_requests(token: String) -> Result<Vec<UserResponse>, S
         .map_err(|e| format!("Failed to get outgoing requests: {}", e))
 }
 
-
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AcceptRejectRequestArgs {
@@ -199,8 +193,11 @@ pub async fn reject_request(token: String, access_id: String) -> Result<(), Stri
 }
 
 pub async fn cancel_request(token: String, request_id: String) -> Result<(), String> {
-    let args = serde_wasm_bindgen::to_value(&AcceptRejectRequestArgs { token, access_id: request_id })
-        .map_err(|e| format!("Failed to serialize cancel_request args: {}", e))?;
+    let args = serde_wasm_bindgen::to_value(&AcceptRejectRequestArgs {
+        token,
+        access_id: request_id,
+    })
+    .map_err(|e| format!("Failed to serialize cancel_request args: {}", e))?;
 
     let result = invoke("cancel_request", args).await;
 
@@ -254,9 +251,6 @@ pub async fn fetch_inbox(token: String) -> Result<Vec<SignalMessage>, String> {
 
     let result = invoke("fetch_inbox", args).await;
 
-    serde_wasm_bindgen::from_value::<InboxResponse>(result)
-        .map(|res| res.messages)
+    serde_wasm_bindgen::from_value::<Vec<SignalMessage>>(result)
         .map_err(|e| format!("Failed to fetch inbox: {}", e))
 }
-
-

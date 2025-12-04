@@ -29,8 +29,10 @@ pub fn sidebar(props: &SidebarProps) -> Html {
                     <Link<Route> to={Route::Viewers} classes="nav-item">{"Viewers"}</Link<Route>>
                     <Link<Route> to={Route::IncomingRequests} classes="nav-item">{"Incoming Requests"}</Link<Route>>
                     <Link<Route> to={Route::OutgoingRequests} classes="nav-item">{"Outgoing Requests"}</Link<Route>>
+                    <Link<Route> to={Route::ScreenShareRequests} classes="nav-item">{"Screen Share Requests"}</Link<Route>>
                 </div>
             </nav>
+
         </aside>
     }
 }

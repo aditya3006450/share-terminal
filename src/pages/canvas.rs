@@ -57,7 +57,7 @@ pub fn canvas_page(props: &CanvasPageProps) -> Html {
                 "offer" => {
                     log::info!("Received offer: {:?}", message.payload);
                     let sdp_text = message.payload["sdp"].as_str().unwrap_or_default();
-                    let mut sdp_init = RtcSessionDescriptionInit::new(RtcSdpType::Offer);
+                    let sdp_init = RtcSessionDescriptionInit::new(RtcSdpType::Offer);
                     sdp_init.set_sdp(sdp_text);
 
                     if let Err(e) = JsFuture::from(pc.set_remote_description(&sdp_init)).await {
@@ -70,7 +70,7 @@ pub fn canvas_page(props: &CanvasPageProps) -> Html {
                         Ok(answer_js) => {
                             let answer = RtcSessionDescription::from(answer_js);
                             let sdp_answer = answer.sdp();
-                            let mut sdp_answer_init =
+                            let sdp_answer_init =
                                 RtcSessionDescriptionInit::new(RtcSdpType::Answer);
                             sdp_answer_init.set_sdp(&sdp_answer);
 
@@ -107,7 +107,7 @@ pub fn canvas_page(props: &CanvasPageProps) -> Html {
                 "answer" => {
                     log::info!("Received answer: {:?}", message.payload);
                     let sdp_text = message.payload["sdp"].as_str().unwrap_or_default();
-                    let mut sdp_init = RtcSessionDescriptionInit::new(RtcSdpType::Answer);
+                    let sdp_init = RtcSessionDescriptionInit::new(RtcSdpType::Answer);
                     sdp_init.set_sdp(sdp_text);
 
                     match JsFuture::from(pc.set_remote_description(&sdp_init)).await {
@@ -121,7 +121,7 @@ pub fn canvas_page(props: &CanvasPageProps) -> Html {
                     log::info!("Received ICE candidate: {:?}", message.payload);
                     let candidate_json_value = message.payload["candidate"].clone();
 
-                    let mut candidate_init = RtcIceCandidateInit::new("");
+                    let candidate_init = RtcIceCandidateInit::new("");
                     if let Some(candidate) = candidate_json_value["candidate"].as_str() {
                         candidate_init.set_candidate(candidate);
                     }
@@ -153,13 +153,11 @@ pub fn canvas_page(props: &CanvasPageProps) -> Html {
 
     // Polling for incoming signal messages
     use_effect_with((), {
-        let user_id = props.id.clone();
         let navigator = navigator.clone();
         let process_signal_message = process_signal_message.clone();
 
         move |_| {
             let interval = Interval::new(1000, move || {
-                let user_id = user_id.clone();
                 let navigator = navigator.clone();
                 let process_signal_message = process_signal_message.clone();
 
@@ -191,6 +189,41 @@ pub fn canvas_page(props: &CanvasPageProps) -> Html {
         }
     });
 
+    // Send initial screen share request when component mounts
+    use_effect_with((), {
+        let target_user_id = props.id.clone();
+
+        move |_| {
+            let target_user_id = target_user_id.clone();
+
+            wasm_bindgen_futures::spawn_local(async move {
+                if let Some(token) = get_auth_token() {
+                    // Get current user info (you might want to add this to your auth utils)
+                    let mut payload = HashMap::new();
+                    payload.insert("userName".to_string(), serde_json::json!("Requesting User"));
+
+                    match send_signal(
+                        token,
+                        target_user_id.clone(),
+                        "request_screen_share".to_string(),
+                        serde_json::json!(payload),
+                    )
+                    .await
+                    {
+                        Ok(_) => {
+                            log::info!("Screen share request sent to user: {}", target_user_id);
+                        }
+                        Err(e) => {
+                            log::error!("Failed to send screen share request: {:?}", e);
+                        }
+                    }
+                }
+            });
+
+            || ()
+        }
+    });
+
     // Initialize RTCPeerConnection
     use_effect_with((), {
         let peer_connection_for_init = peer_connection.clone();
@@ -210,7 +243,7 @@ pub fn canvas_page(props: &CanvasPageProps) -> Html {
             .unwrap();
             ice_servers.push(&ice_server_obj);
 
-            let mut config = RtcConfiguration::new();
+            let config = RtcConfiguration::new();
             config.set_ice_servers(&ice_servers);
 
             // Create RTCPeerConnection with configuration
@@ -395,7 +428,7 @@ pub fn canvas_page(props: &CanvasPageProps) -> Html {
                                 Ok(offer_js) => {
                                     let offer = RtcSessionDescription::from(offer_js);
                                     let sdp_offer = offer.sdp();
-                                    let mut sdp_offer_init =
+                                    let sdp_offer_init =
                                         RtcSessionDescriptionInit::new(RtcSdpType::Offer);
                                     sdp_offer_init.set_sdp(&sdp_offer);
 
