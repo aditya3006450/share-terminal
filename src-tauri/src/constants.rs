@@ -1,8 +1,6 @@
 // API Configuration
-// pub const API_BASE_URL: &str =
-//     "https://share-termial-hcdmbfd8gwb8ehb6.centralindia-01.azurewebsites.net";
-//
-pub const API_BASE_URL: &str = "http://localhost:8080";
+pub const API_BASE_URL: &str =
+    "https://share-termial-hcdmbfd8gwb8ehb6.centralindia-01.azurewebsites.net";
 
 // API Endpoints
 pub mod endpoints {
