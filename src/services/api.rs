@@ -1,4 +1,4 @@
-use js_sys::Boolean;
+
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 

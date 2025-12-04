@@ -1,0 +1,88 @@
+.canvas-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    z-index: 100;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.dark-theme .canvas-topbar {
+    background: #111;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.canvas-topbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.canvas-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 0;
+    background: none;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    border: none;
+    transition: color 0.17s ease;
+}
+
+.theme-toggle:hover {
+    color: #111;
+}
+
+.dark-theme .theme-toggle {
+    color: #ddd;
+}
+
+
+.btn-disconnect {
+    padding: 7px 16px;
+    background: #f44336;
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
+
+.canvas-container {
+    padding-top: 56px;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#canvas {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.btn-disconnect:hover {
+    background: #da190b;
+}

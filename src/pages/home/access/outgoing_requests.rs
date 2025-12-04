@@ -4,8 +4,14 @@ use crate::utils::auth::get_auth_token;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 
+#[derive(Properties, PartialEq)]
+pub struct OutgoingRequestsProps {
+    pub dark_mode: bool,
+    pub toggle_theme: Callback<()>,
+}
+
 #[function_component(OutgoingRequests)]
-pub fn outgoing_requests() -> Html {
+pub fn outgoing_requests(props: &OutgoingRequestsProps) -> Html {
     let requests = use_state(|| Vec::<UserResponse>::new());
     let loading = use_state(|| false);
     let error = use_state(|| Option::<String>::None);
@@ -70,7 +76,7 @@ pub fn outgoing_requests() -> Html {
     };
 
     html! {
-        <AccessLayout>
+        <AccessLayout dark_mode={props.dark_mode} toggle_theme={props.toggle_theme.reform(|_| ())}>
         <section>
             <h2>{"Outgoing Requests"}</h2>
             {if *loading {

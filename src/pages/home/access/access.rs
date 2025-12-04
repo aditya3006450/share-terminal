@@ -4,8 +4,14 @@ use crate::utils::auth::get_auth_token;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 
+#[derive(Properties, PartialEq)]
+pub struct AccessProps {
+    pub dark_mode: bool,
+    pub toggle_theme: Callback<()>,
+}
+
 #[function_component(Access)]
-pub fn access() -> Html {
+pub fn access(props: &AccessProps) -> Html {
     let target_user_id_input = use_state(|| String::new());
     let request_access_message = use_state(|| Option::<String>::None);
     let on_target_user_id_input = {
@@ -46,7 +52,7 @@ pub fn access() -> Html {
         })
     };
     html! {
-        <AccessLayout>
+        <AccessLayout dark_mode={props.dark_mode} toggle_theme={props.toggle_theme.reform(|_| ())}>
             <section>
                 <h2>{"Request Access"}</h2>
                 <div class="request-access-section">

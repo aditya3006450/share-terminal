@@ -1,11 +1,19 @@
 use crate::components::access_layout::AccessLayout;
+use crate::router::router::Route;
 use crate::services::api::{self, UserResponse};
 use crate::utils::auth::get_auth_token;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
+use yew_router::prelude::*;
+
+#[derive(Properties, PartialEq)]
+pub struct ConnectedUsersProps {
+    pub dark_mode: bool,
+    pub toggle_theme: Callback<()>,
+}
 
 #[function_component(ConnectedUsers)]
-pub fn connected_users() -> Html {
+pub fn connected_users(props: &ConnectedUsersProps) -> Html {
     let connected_users = use_state(|| Vec::<UserResponse>::new());
     let loading = use_state(|| false);
     let error = use_state(|| Option::<String>::None);
@@ -45,7 +53,7 @@ pub fn connected_users() -> Html {
     });
 
     html! {
-        <AccessLayout>
+        <AccessLayout dark_mode={props.dark_mode} toggle_theme={props.toggle_theme.reform(|_| ())}>
             <section>
                 <h2>{"Connected Users"}</h2>
                 {"Users whose device can be accessed by you"}
@@ -59,6 +67,7 @@ pub fn connected_users() -> Html {
                     html! {
                         <div class="connected-users-grid">
                             { for connected_users.iter().map(|user| {
+                                let user_id = user.id.clone();
                                 html! {
                                     <div class="user-card">
                                         <div class="user-card-header">
@@ -67,6 +76,11 @@ pub fn connected_users() -> Html {
                                         <div class="user-card-body">
                                             <p class="user-detail-id">{"ID: "}{&user.id}</p>
                                             <p class="user-detail-email">{"Email: "}{&user.email}</p>
+                                        </div>
+                                        <div class="user-card-footer">
+                                            <Link<Route> to={Route::Canvas { id: user_id }}>
+                                                <div class="btn-accept">{"Connect"}</div>
+                                            </Link<Route>>
                                         </div>
                                     </div>
                                 }
@@ -78,4 +92,3 @@ pub fn connected_users() -> Html {
         </AccessLayout>
     }
 }
-
